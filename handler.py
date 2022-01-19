@@ -1,12 +1,21 @@
 import json
+import os
+import boto3
 
 
-def hello(event, context):
-    body = {
-        "message": "Go Serverless v2.0! Your function executed successfully!",
-        "input": event,
-    }
+def put_job(event, context):
+    data = json.loads(event['body'])
+    rssUrl = data['rssUrl']
+    schedule = data['schedule']
 
-    response = {"statusCode": 200, "body": json.dumps(body)}
+    dynamodb = boto3.resource('dynamodb', endpoint_url=os.environ.get('DB_URL'))
+
+    table = dynamodb.Table('Jobs')
+    response = table.put_item(
+        Item={
+            'rssUrl': rssUrl,
+            'schedule': schedule,
+        }
+    )
 
     return response

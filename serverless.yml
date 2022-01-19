@@ -10,9 +10,9 @@ provider:
   lambdaHashingVersion: '20201221'
 
 functions:
-  hello:
-    handler: handler.hello
+  job:
+    handler: handler.put_job
     events:
       - httpApi:
           path: /
-          method: get
+          method: post

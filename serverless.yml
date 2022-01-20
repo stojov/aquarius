@@ -22,9 +22,23 @@ functions:
           path: /
           method: post
 
-  getJob:
+  updateJob:
+    handler: handler.update_job
+    events:
+      - httpApi:
+          path: /{id}
+          method: put
+
+  getJobs:
     handler: handler.get_job
     events:
       - httpApi:
           path: /
+          method: get
+
+  getJob:
+    handler: handler.get_job_by_id
+    events:
+      - httpApi:
+          path: /{id}
           method: get

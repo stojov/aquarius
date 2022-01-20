@@ -25,6 +25,30 @@ def put_job(event, context):
     return response
 
 
+def update_job(event, context):
+    id = event['pathParameters']['id']
+    data = json.loads(event['body'])
+    id = str(uuid.uuid4())
+    rssUrl = data['rssUrl']
+    schedule = data['schedule']
+
+    dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
+        'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
+
+    table = dynamodb.Table('Jobs')
+    response = table.put_item(
+        Key={'id': id},
+        UpdateExpression="set info.rssUrl=:rssUrl, info.schedule=:schedule",
+        ExpressionAttributeValues={
+            ':rssUrl': schedule,
+            ':schedule': rssUrl,
+        },
+        ReturnValues="UPDATED_NEW"
+    )
+
+    return response
+
+
 def get_job(event, context):
     dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
         'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
@@ -33,3 +57,15 @@ def get_job(event, context):
     response = table.scan()
 
     return response['Items']
+
+
+def get_job_by_id(event, context):
+    dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
+        'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
+
+    id = event['pathParameters']['id']
+
+    table = dynamodb.Table('Jobs')
+    response = table.get_item(Key={'id': id})
+
+    return response['Item']

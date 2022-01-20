@@ -8,11 +8,23 @@ provider:
   name: aws
   runtime: python3.8
   lambdaHashingVersion: '20201221'
+  environment:
+    AWS_ACCESS_KEY:
+    AWS_SECRET_ACCESS_KEY:
+    AWS_REGION:
+    DB_URL:
 
 functions:
-  job:
+  putJob:
     handler: handler.put_job
     events:
       - httpApi:
           path: /
           method: post
+
+  getJob:
+    handler: handler.get_job
+    events:
+      - httpApi:
+          path: /
+          method: get

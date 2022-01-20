@@ -36,9 +36,9 @@ def update_job(event, context):
         'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
 
     table = dynamodb.Table('Jobs')
-    response = table.put_item(
+    response = table.update_item(
         Key={'id': id},
-        UpdateExpression="set info.rssUrl=:rssUrl, info.schedule=:schedule",
+        UpdateExpression="set rssUrl=:rssUrl, schedule=:schedule",
         ExpressionAttributeValues={
             ':rssUrl': schedule,
             ':schedule': rssUrl,

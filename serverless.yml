@@ -42,3 +42,10 @@ functions:
       - httpApi:
           path: /api/job/{id}
           method: get
+
+  deleteJob:
+    handler: handler.delete_job
+    events:
+      - httpApi:
+          path: /api/job/{id}
+          method: delete

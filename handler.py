@@ -134,3 +134,33 @@ def get_job_by_id(event, context):
         },
         "body": json.dumps(response['Item'])
     }
+
+
+def delete_job(event, context):
+    try:
+        id = event['pathParameters']['id']
+
+        dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
+            'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
+
+        table = dynamodb.Table('Jobs')
+        response = table.delete_item(
+            Key={'id': id}
+        )
+    except Exception:
+        logging.exception(Exception)
+        return {
+            "statusCode": 500,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": json.dumps('Internal Server Error')
+        }
+
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps(response)
+    }

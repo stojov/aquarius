@@ -19,26 +19,26 @@ functions:
     handler: handler.put_job
     events:
       - httpApi:
-          path: /
+          path: /api/job
           method: post
 
   updateJob:
     handler: handler.update_job
     events:
       - httpApi:
-          path: /{id}
+          path: /api/job/{id}
           method: put
 
   getJobs:
     handler: handler.get_job
     events:
       - httpApi:
-          path: /
+          path: /api/job
           method: get
 
   getJob:
     handler: handler.get_job_by_id
     events:
       - httpApi:
-          path: /{id}
+          path: /api/job/{id}
           method: get

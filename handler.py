@@ -1,5 +1,6 @@
 import json
 import os
+import logging
 import boto3
 import uuid
 
@@ -23,6 +24,7 @@ def put_job(event, context):
             }
         )
     except Exception:
+        logging.exception(Exception)
         return {
             "statusCode": 500,
             "headers": {
@@ -63,6 +65,7 @@ def update_job(event, context):
             ReturnValues="UPDATED_NEW"
         )
     except Exception:
+        logging.exception(Exception)
         return {
             "statusCode": 500,
             "headers": {
@@ -88,6 +91,7 @@ def get_job(event, context):
         table = dynamodb.Table('Jobs')
         response = table.scan()
     except Exception:
+        logging.exception(Exception)
         return {
             "statusCode": 500,
             "headers": {
@@ -115,6 +119,7 @@ def get_job_by_id(event, context):
         table = dynamodb.Table('Jobs')
         response = table.get_item(Key={'id': id})
     except Exception:
+        logging.exception(Exception)
         return {
             "statusCode": 500,
             "headers": {

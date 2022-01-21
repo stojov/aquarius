@@ -5,67 +5,128 @@ import uuid
 
 
 def put_job(event, context):
-    data = json.loads(event['body'])
-    id = str(uuid.uuid4())
-    rssUrl = data['rssUrl']
-    schedule = data['schedule']
+    try:
+        data = json.loads(event['body'])
+        id = str(uuid.uuid4())
+        rssUrl = data['rssUrl']
+        schedule = data['schedule']
 
-    dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
-        'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
+        dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
+            'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
 
-    table = dynamodb.Table('Jobs')
-    response = table.put_item(
-        Item={
-            'id': id,
-            'rssUrl': rssUrl,
-            'schedule': schedule,
+        table = dynamodb.Table('Jobs')
+        response = table.put_item(
+            Item={
+                'id': id,
+                'rssUrl': rssUrl,
+                'schedule': schedule,
+            }
+        )
+    except Exception:
+        return {
+            "statusCode": 500,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": json.dumps('Internal Server Error')
         }
-    )
 
-    return response
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps(response)
+    }
 
 
 def update_job(event, context):
-    id = event['pathParameters']['id']
-    data = json.loads(event['body'])
-    id = str(uuid.uuid4())
-    rssUrl = data['rssUrl']
-    schedule = data['schedule']
+    try:
+        id = event['pathParameters']['id']
+        data = json.loads(event['body'])
+        id = str(uuid.uuid4())
+        rssUrl = data['rssUrl']
+        schedule = data['schedule']
 
-    dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
-        'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
+        dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
+            'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
 
-    table = dynamodb.Table('Jobs')
-    response = table.update_item(
-        Key={'id': id},
-        UpdateExpression="set rssUrl=:rssUrl, schedule=:schedule",
-        ExpressionAttributeValues={
-            ':rssUrl': schedule,
-            ':schedule': rssUrl,
+        table = dynamodb.Table('Jobs')
+        response = table.update_item(
+            Key={'id': id},
+            UpdateExpression="set rssUrl=:rssUrl, schedule=:schedule",
+            ConditionExpression='attribute_exists(id)',
+            ExpressionAttributeValues={
+                ':rssUrl': schedule,
+                ':schedule': rssUrl,
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+    except Exception:
+        return {
+            "statusCode": 500,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": json.dumps('Internal Server Error')
+        }
+
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
         },
-        ReturnValues="UPDATED_NEW"
-    )
-
-    return response
+        "body": json.dumps(response)
+    }
 
 
 def get_job(event, context):
-    dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
-        'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
+    try:
+        dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
+            'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
 
-    table = dynamodb.Table('Jobs')
-    response = table.scan()
+        table = dynamodb.Table('Jobs')
+        response = table.scan()
+    except Exception:
+        return {
+            "statusCode": 500,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": json.dumps('Internal Server Error')
+        }
 
-    return response['Items']
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps(response['Items'])
+    }
 
 
 def get_job_by_id(event, context):
-    dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
-        'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
+    try:
+        dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
+            'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
 
-    id = event['pathParameters']['id']
+        id = event['pathParameters']['id']
 
-    table = dynamodb.Table('Jobs')
-    response = table.get_item(Key={'id': id})
+        table = dynamodb.Table('Jobs')
+        response = table.get_item(Key={'id': id})
+    except Exception:
+        return {
+            "statusCode": 500,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "body": json.dumps('Internal Server Error')
+        }
 
-    return response['Item']
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps(response['Item'])
+    }

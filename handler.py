@@ -46,7 +46,6 @@ def update_job(event, context):
     try:
         id = event['pathParameters']['id']
         data = json.loads(event['body'])
-        id = str(uuid.uuid4())
         rssUrl = data['rssUrl']
         schedule = data['schedule']
 
@@ -56,8 +55,8 @@ def update_job(event, context):
         table = dynamodb.Table('Jobs')
         response = table.update_item(
             Key={'id': id},
-            UpdateExpression="set rssUrl=:rssUrl, schedule=:schedule",
-            ConditionExpression='attribute_exists(id)',
+            UpdateExpression="SET rssUrl=:rssUrl, schedule=:schedule",
+            ConditionExpression="attribute_exists(id)",
             ExpressionAttributeValues={
                 ':rssUrl': schedule,
                 ':schedule': rssUrl,
@@ -79,7 +78,7 @@ def update_job(event, context):
         "headers": {
             "Content-Type": "application/json"
         },
-        "body": json.dumps(response)
+        "body": json.dumps(response["Attributes"])
     }
 
 

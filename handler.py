@@ -4,7 +4,6 @@ import logging
 import boto3
 import uuid
 
-
 def put_job(event, context):
     try:
         data = json.loads(event['body'])
@@ -21,6 +20,7 @@ def put_job(event, context):
                 'id': id,
                 'rssUrl': rssUrl,
                 'schedule': schedule,
+                'active': True,
             }
         )
     except Exception:
@@ -28,7 +28,7 @@ def put_job(event, context):
         return {
             "statusCode": 500,
             "headers": {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             "body": json.dumps('Internal Server Error')
         }
@@ -36,7 +36,7 @@ def put_job(event, context):
     return {
         "statusCode": 200,
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
         "body": json.dumps(response)
     }
@@ -68,7 +68,7 @@ def update_job(event, context):
         return {
             "statusCode": 500,
             "headers": {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             "body": json.dumps('Internal Server Error')
         }
@@ -76,7 +76,7 @@ def update_job(event, context):
     return {
         "statusCode": 200,
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
         "body": json.dumps(response["Attributes"])
     }
@@ -94,7 +94,7 @@ def get_job(event, context):
         return {
             "statusCode": 500,
             "headers": {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             "body": json.dumps('Internal Server Error')
         }
@@ -102,7 +102,8 @@ def get_job(event, context):
     return {
         "statusCode": 200,
         "headers": {
-            "Content-Type": "application/json"
+            "Access-Control-Allow-Origin": '*',
+            "Content-Type": "application/json",
         },
         "body": json.dumps(response['Items'])
     }
@@ -122,7 +123,7 @@ def get_job_by_id(event, context):
         return {
             "statusCode": 500,
             "headers": {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             "body": json.dumps('Internal Server Error')
         }
@@ -130,7 +131,7 @@ def get_job_by_id(event, context):
     return {
         "statusCode": 200,
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
         "body": json.dumps(response['Item'])
     }
@@ -152,7 +153,7 @@ def delete_job(event, context):
         return {
             "statusCode": 500,
             "headers": {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             "body": json.dumps('Internal Server Error')
         }
@@ -160,7 +161,7 @@ def delete_job(event, context):
     return {
         "statusCode": 200,
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
         "body": json.dumps(response)
     }

@@ -15,10 +15,10 @@ provider:
   httpApi:
     cors: true
   environment:
-    AWS_ACCESS_KEY:
-    AWS_SECRET_ACCESS_KEY:
-    AWS_REGION:
-    DB_URL:
+    AWS_ACCESS_KEY: fakeAccessKeyId
+    AWS_SECRET_ACCESS_KEY: fakeSecretAccessKey
+    AWS_REGION: us-east-1
+    DB_URL: http://localhost:8000
 
 functions:
   putJob:

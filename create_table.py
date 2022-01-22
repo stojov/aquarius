@@ -1,6 +1,12 @@
 import boto3
 import os
 
+os.environ["AWS_ACCESS_KEY"] = "fakeAccessKeyId"
+os.environ["AWS_SECRET_ACCESS_KEY"] = "fakeSecretAccessKey"
+os.environ["AWS_REGION"] = "us-east-1"
+os.environ["DB_URL"] = "http://localhost:8000"
+
+
 
 def create_jobs_table(dynamodb=None):
     if not dynamodb:

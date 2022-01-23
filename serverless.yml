@@ -15,10 +15,9 @@ provider:
   httpApi:
     cors: true
   environment:
-    AWS_ACCESS_KEY: fakeAccessKeyId
-    AWS_SECRET_ACCESS_KEY: fakeSecretAccessKey
-    AWS_REGION: us-east-1
-    DB_URL: http://localhost:8000
+    AWS_ACCESS_KEY:
+    AWS_SECRET_ACCESS_KEY:
+    AWS_REGION:
 
 functions:
   putJob:
@@ -33,6 +32,13 @@ functions:
     events:
       - httpApi:
           path: /api/job/{id}
+          method: put
+
+  updateJobStatus:
+    handler: handler.update_job_status
+    events:
+      - httpApi:
+          path: /api/job/{id}/status
           method: put
 
   getJobs:

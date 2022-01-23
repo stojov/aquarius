@@ -82,6 +82,44 @@ def update_job(event, context):
     }
 
 
+def update_job_status(event, context):
+    try:
+        id = event['pathParameters']['id']
+        data = json.loads(event['body'])
+        status = data['status']
+
+        dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
+            'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
+
+        table = dynamodb.Table('Jobs')
+        response = table.update_item(
+            Key={'id': id},
+            UpdateExpression="SET active=:status",
+            ConditionExpression="attribute_exists(id)",
+            ExpressionAttributeValues={
+                ':status': status
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+    except Exception:
+        logging.exception(Exception)
+        return {
+            "statusCode": 500,
+            "headers": {
+                "Content-Type": "application/json",
+            },
+            "body": json.dumps('Internal Server Error')
+        }
+
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json",
+        },
+        "body": json.dumps(response["Attributes"])
+    }
+
+
 def get_job(event, context):
     try:
         dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(

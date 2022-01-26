@@ -61,3 +61,6 @@ functions:
       - httpApi:
           path: /api/job/{id}
           method: delete
+
+  parseRss:
+    handler: handlers.url_parser.rss_parser

@@ -1,11 +1,19 @@
+import json
 import feedparser
 
 
 def rss_parser(event, context):
     try:
-        data = json.loads(event['body'])
-        rssUrl = data['rssUrl']
+        rssUrl = event['rssUrl']
 
-        feed = feedparser.parse(url)
+        feed = feedparser.parse(rssUrl)
 
-        return
+        for item in feed.entries:
+            print(item.title)
+            print(item.published)
+        
+    
+    except e:
+        print(e)
+
+

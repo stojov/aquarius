@@ -21,42 +21,42 @@ provider:
 
 functions:
   putJob:
-    handler: handler.put_job
+    handler: handlers.job.put_job
     events:
       - httpApi:
           path: /api/job
           method: post
 
   updateJob:
-    handler: handler.update_job
+    handler: handlers.job.update_job
     events:
       - httpApi:
           path: /api/job/{id}
           method: put
 
   updateJobStatus:
-    handler: handler.update_job_status
+    handler: handlers.job.update_job_status
     events:
       - httpApi:
           path: /api/job/{id}/status
           method: put
 
   getJobs:
-    handler: handler.get_job
+    handler: handlers.job.get_job
     events:
       - httpApi:
           path: /api/job
           method: get
 
   getJob:
-    handler: handler.get_job_by_id
+    handler: handlers.job.get_job_by_id
     events:
       - httpApi:
           path: /api/job/{id}
           method: get
 
   deleteJob:
-    handler: handler.delete_job
+    handler: handlers.job.delete_job
     events:
       - httpApi:
           path: /api/job/{id}

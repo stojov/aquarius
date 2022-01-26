@@ -4,6 +4,7 @@ import logging
 import boto3
 import uuid
 
+
 def put_job(event, context):
     try:
         data = json.loads(event['body'])
@@ -14,6 +15,10 @@ def put_job(event, context):
         dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
             'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
 
+        event_client = boto3.client('events',
+                                    aws_access_key_id="YOUR_ACCESS_KEY",
+                                    aws_secret_access_key="YOUR_SECRET_KEY")
+
         table = dynamodb.Table('Jobs')
         response = table.put_item(
             Item={
@@ -23,6 +28,10 @@ def put_job(event, context):
                 'active': True,
             }
         )
+
+        rslt = event_client.put_rule(Name='DEMO_EVENT',
+                                     ScheduleExpression=f'cron({schedule})',
+                                     State='ENABLED')
     except Exception:
         logging.exception(Exception)
         return {

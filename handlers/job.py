@@ -1,8 +1,8 @@
 import json
 import os
 import logging
-import boto3
 import uuid
+from helpers.db import dynamodb, event_client
 
 
 def put_job(event, context):
@@ -11,13 +11,6 @@ def put_job(event, context):
         id = str(uuid.uuid4())
         rssUrl = data['rssUrl']
         schedule = data['schedule']
-
-        dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
-            'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
-
-        event_client = boto3.client('events',
-                                    aws_access_key_id="YOUR_ACCESS_KEY",
-                                    aws_secret_access_key="YOUR_SECRET_KEY")
 
         table = dynamodb.Table('Jobs')
         response = table.put_item(
@@ -29,7 +22,7 @@ def put_job(event, context):
             }
         )
 
-        rslt = event_client.put_rule(Name='DEMO_EVENT',
+        result = event_client.put_rule(Name='DEMO_EVENT',
                                      ScheduleExpression=f'cron({schedule})',
                                      State='ENABLED')
     except Exception:
@@ -57,9 +50,6 @@ def update_job(event, context):
         data = json.loads(event['body'])
         rssUrl = data['rssUrl']
         schedule = data['schedule']
-
-        dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
-            'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
 
         table = dynamodb.Table('Jobs')
         response = table.update_item(
@@ -97,9 +87,6 @@ def update_job_status(event, context):
         data = json.loads(event['body'])
         status = data['status']
 
-        dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
-            'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
-
         table = dynamodb.Table('Jobs')
         response = table.update_item(
             Key={'id': id},
@@ -131,9 +118,6 @@ def update_job_status(event, context):
 
 def get_job(event, context):
     try:
-        dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
-            'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
-
         table = dynamodb.Table('Jobs')
         response = table.scan()
     except Exception:
@@ -158,9 +142,6 @@ def get_job(event, context):
 
 def get_job_by_id(event, context):
     try:
-        dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
-            'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
-
         id = event['pathParameters']['id']
 
         table = dynamodb.Table('Jobs')
@@ -187,9 +168,6 @@ def get_job_by_id(event, context):
 def delete_job(event, context):
     try:
         id = event['pathParameters']['id']
-
-        dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
-            'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
 
         table = dynamodb.Table('Jobs')
         response = table.delete_item(

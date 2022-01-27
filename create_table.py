@@ -1,41 +1,63 @@
-import boto3
-import os
-
-os.environ["AWS_ACCESS_KEY"] =
-os.environ["AWS_SECRET_ACCESS_KEY"] =
-os.environ["AWS_REGION"] =
-os.environ["DB_URL"] =
+from helpers.db import dynamodb
 
 
+def create_jobs_table():
+    try:
+        table = dynamodb.create_table(
+            TableName='Jobs',
+            KeySchema=[
+                {
+                    'AttributeName': 'id',
+                    'KeyType': 'HASH'
+                },
+            ],
+            AttributeDefinitions=[
+                {
+                    'AttributeName': 'id',
+                    'AttributeType': 'S'
+                },
 
-def create_jobs_table(dynamodb=None):
-    if not dynamodb:
-        dynamodb = boto3.resource('dynamodb', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get(
-            'AWS_SECRET_ACCESS_KEY'), region_name=os.environ.get('AWS_REGION'), endpoint_url=os.environ.get('DB_URL'))
+            ],
+            ProvisionedThroughput={
+                'ReadCapacityUnits': 10,
+                'WriteCapacityUnits': 10
+            }
+        )
+        return table
+    except Exception as e:
+        print(e)
 
-    table = dynamodb.create_table(
-        TableName='Jobs',
-        KeySchema=[
-            {
-                'AttributeName': 'id',
-                'KeyType': 'HASH'
-            },
-        ],
-        AttributeDefinitions=[
-            {
-                'AttributeName': 'id',
-                'AttributeType': 'S'
-            },
 
-        ],
-        ProvisionedThroughput={
-            'ReadCapacityUnits': 10,
-            'WriteCapacityUnits': 10
-        }
-    )
-    return table
+def create_parse_record_table():
+    try:
+        table = dynamodb.create_table(
+            TableName='ParseRecords',
+            KeySchema=[
+                {
+                    'AttributeName': 'id',
+                    'KeyType': 'HASH'
+                },
+            ],
+            AttributeDefinitions=[
+                {
+                    'AttributeName': 'id',
+                    'AttributeType': 'S'
+                },
+
+            ],
+            ProvisionedThroughput={
+                'ReadCapacityUnits': 10,
+                'WriteCapacityUnits': 10
+            }
+        )
+        return table
+    except Exception as e:
+        print(e)
 
 
 if __name__ == '__main__':
     job_table = create_jobs_table()
+    parse_record_table = create_parse_record_table()
     print("Table status:", job_table.table_status)
+    print("Table status:", parse_record_table.table_status)
+

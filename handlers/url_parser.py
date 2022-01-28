@@ -1,5 +1,11 @@
 import feedparser
 from helpers.db import dynamodb
+from dict2xml import dict2xml
+import requests
+from os import environ
+
+
+COLUMBIA_API = environ.get('COLUMBIA_API')
 
 
 def rss_parser(event, context):
@@ -17,8 +23,16 @@ def rss_parser(event, context):
             job.get('rssUrl'), etag=etag, modified=modified)
 
         for item in feed.entries:
-            print(item.title)
-            print(item.published)
+            data = {
+                "title": item.title,
+                "description": item.body,
+                "pubDate": item.date,
+                "author": item.author
+            }
+            xml = dict2xml(data, wrap='root', indent="   ")
+
+            headers = {'Content-Type': 'application/xml'}
+            requests.post(COLUMBIA_API, data=xml, headers=headers)
 
         etag = feed.get('etag')
         modified = feed.get('modified')

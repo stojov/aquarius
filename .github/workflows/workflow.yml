@@ -19,12 +19,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
-    - run: serverless plugin install -n serverless-prune-plugin
-    - run: serverless plugin install -n serverless-python-requirements
     - name: serverless deploy
       uses: serverless/github-action@master
       with:
-        args: deploy
+        args: erverless plugin install -n serverless-prune-plugin && serverless plugin install -n serverless-python-requirements && deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

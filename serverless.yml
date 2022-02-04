@@ -4,6 +4,7 @@ frameworkVersion: '2 || 3'
 plugins:
   - serverless-offline
   - serverless-prune-plugin
+  - serverless-python-requirements
 
 custom:
   serverless-offline:
@@ -11,6 +12,9 @@ custom:
   prune:
     automatic: true
     number: 1
+  pythonRequirements:
+    dockerizePip: false
+
 
 provider:
   name: aws

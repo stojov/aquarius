@@ -1,5 +1,4 @@
 import json
-import os
 import logging
 import uuid
 from helpers.db import dynamodb, event_client

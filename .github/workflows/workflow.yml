@@ -22,7 +22,8 @@ jobs:
     - name: serverless deploy
       uses: serverless/github-action@master
       with:
-        args: serverless plugin install -n serverless-prune-plugin && serverless plugin install -n serverless-python-requirements && deploy
+        args: -c "serverless plugin install --name serverless-prune-plugin && serverless plugin install --name serverless-python-requirements && deploy --verbose"
+        entrypoint: /bin/bash
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

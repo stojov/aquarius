@@ -1,5 +1,5 @@
 service: aquarius
-frameworkVersion: "3"
+frameworkVersion: "2"
 
 plugins:
   - serverless-offline

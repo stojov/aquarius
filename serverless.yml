@@ -26,6 +26,7 @@ provider:
     AWS_ACCESS_KEY: ${{ secrets.AWS_S3_BUCKET }}
     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     AWS_REGION: ${{ secrets.AWS_REGION }}
+    SLS_DEBUG: *
 
 functions:
   putJob:

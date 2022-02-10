@@ -23,7 +23,7 @@ provider:
   httpApi:
     cors: true
   environment:
-    AWS_ACCESS_KEY: ${{ secrets.AWS_S3_BUCKET }}
+    AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     AWS_REGION: ${{ secrets.AWS_REGION }}
 

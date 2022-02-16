@@ -25,6 +25,6 @@ jobs:
         args: -c "serverless plugin install --name serverless-prune-plugin && serverless plugin install --name serverless-python-requirements && serverless deploy --verbose"
         entrypoint: /bin/sh
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.REGION }}

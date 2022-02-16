@@ -2,9 +2,9 @@ import boto3
 from os import environ
 
 
-AWS_ACCESS_KEY = environ.get('AWS_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_REGION = environ.get('AWS_REGION')
+AWS_ACCESS_KEY = environ.get('ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = environ.get('SECRET_ACCESS_KEY')
+AWS_REGION = environ.get('REGION')
 DB_URL = environ.get('DB_URL')
 
 

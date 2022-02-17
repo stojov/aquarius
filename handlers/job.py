@@ -49,7 +49,7 @@ def update_job(event, context):
         if 'body' in event:
             data = json.loads(event['body'])
         else:
-            data = event
+            data = json.loads(event)
         rssUrl = data['rssUrl']
         schedule = data['schedule']
 

@@ -21,9 +21,9 @@ def put_job(event, context):
             }
         )
 
-        result = event_client.put_rule(Name='DEMO_EVENT',
-                                     ScheduleExpression=f'cron({schedule})',
-                                     State='ENABLED')
+        # result = event_client.put_rule(Name='DEMO_EVENT',
+        #                              ScheduleExpression=f'cron({schedule})',
+        #                              State='ENABLED')
     except Exception:
         logging.exception(Exception)
         return {
@@ -49,7 +49,7 @@ def update_job(event, context):
         if 'body' in event:
             data = json.loads(event['body'])
         else:
-            data = json.loads(event)
+            data = event
         rssUrl = data['rssUrl']
         schedule = data['schedule']
 

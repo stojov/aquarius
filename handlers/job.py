@@ -46,7 +46,10 @@ def put_job(event, context):
 def update_job(event, context):
     try:
         id = event['pathParameters']['id']
-        data = json.loads(event['body'])
+        if 'body' in event:
+            data = json.loads(event['body'])
+        else:
+            data = event
         rssUrl = data['rssUrl']
         schedule = data['schedule']
 

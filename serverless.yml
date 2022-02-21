@@ -26,6 +26,7 @@ provider:
     ACCESS_KEY: ${{ secrets.ACCESS_KEY_ID }}
     SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
     REGION: ${{ secrets.REGION }}
+    DB_URL: ${{ DB_URL }}
 
 functions:
   putJob:

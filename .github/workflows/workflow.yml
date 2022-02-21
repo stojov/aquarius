@@ -14,24 +14,24 @@ jobs:
         node-version: [16.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-  
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
 
-    - run: npm install
-    - name: serverless deploy
-      uses: serverless/github-action@v3
-      with:
-        args: -c "serverless plugin install --name serverless-prune-plugin && serverless plugin install --name serverless-python-requirements && serverless deploy --verbose"
-        entrypoint: /bin/sh
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.REGION }}
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: serverless deploy
+        uses: serverless/github-action@v3
+        with:
+          args: -c "serverless plugin install --name serverless-prune-plugin && serverless plugin install --name serverless-python-requirements && serverless deploy --verbose"
+          entrypoint: /bin/sh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.REGION }}

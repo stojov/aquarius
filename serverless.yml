@@ -23,10 +23,10 @@ provider:
   httpApi:
     cors: true
   environment:
-    ACCESS_KEY: ${env:AWS_ACCESS_KEY_ID }
-    SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY }
-    REGION: ${env:AWS_REGION }
-    DB_URL: ${env:DB_URL }
+    ACCESS_KEY: ${env:AWS_ACCESS_KEY_ID}
+    SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
+    REGION: ${env:AWS_REGION}
+    DB_URL: ${env:DB_URL}
 
 functions:
   putJob:

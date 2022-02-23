@@ -27,6 +27,7 @@ provider:
     SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
     REGION: ${env:AWS_REGION}
     DB_URL: ${env:DB_URL}
+    JOB_LAMBDA_ARN: ${env:JOB_LAMBDA_ARN}
 
 functions:
   putJob:

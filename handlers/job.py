@@ -16,6 +16,9 @@ def put_job(event, context):
         rssUrl = data['rssUrl']
         schedule = data['schedule']
 
+        if not rssUrl.startswith('http'):
+            rssUrl = 'http://'+rssUrl
+
         if not isValidURL(rssUrl):
             return {
                 "statusCode": 400,

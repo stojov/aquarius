@@ -1,15 +1,29 @@
 import json
 import logging
+from os import environ
 import uuid
 from helpers.db import dynamodb, event_client
+from helpers.validation import isValidURL
+
+JOB_LAMBDA_ARN = environ.get('JOB_LAMBDA_ARN')
 
 
 def put_job(event, context):
     try:
         data = json.loads(event['body'])
         id = str(uuid.uuid4())
+        name = data['name']
         rssUrl = data['rssUrl']
         schedule = data['schedule']
+
+        if not isValidURL(rssUrl):
+            return {
+                "statusCode": 400,
+                "headers": {
+                    "Content-Type": "applicationjson",
+                },
+                "body": json.dumps('Invalid url')
+            }
 
         table = dynamodb.Table('Jobs')
         response = table.put_item(
@@ -21,9 +35,17 @@ def put_job(event, context):
             }
         )
 
-        result = event_client.put_rule(Name='DEMO_EVENT',
-                                     ScheduleExpression=f'cron({schedule})',
-                                     State='ENABLED')
+        event_client.put_rule(Name=name,
+                              ScheduleExpression=f'{schedule}',
+                              State='ENABLED')
+
+        event_client.put_targets(Rule=name,
+                                 Targets=[
+                                     {
+                                         'Arn': JOB_LAMBDA_ARN,
+                                         'Id': str(uuid.uuid4()),
+                                     }
+                                 ])
     except Exception:
         logging.exception(Exception)
         return {

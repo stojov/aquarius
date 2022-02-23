@@ -32,6 +32,7 @@ def put_job(event, context):
         response = table.put_item(
             Item={
                 'id': id,
+                'name': name,
                 'rssUrl': rssUrl,
                 'schedule': schedule,
                 'active': True,
@@ -75,15 +76,17 @@ def update_job(event, context):
             data = json.loads(event['body'])
         else:
             data = event
+        name = data['name'],
         rssUrl = data['rssUrl']
         schedule = data['schedule']
 
         table = dynamodb.Table('Jobs')
         response = table.update_item(
             Key={'id': id},
-            UpdateExpression="SET rssUrl=:rssUrl, schedule=:schedule",
+            UpdateExpression="SET name=:name, rssUrl=:rssUrl, schedule=:schedule",
             ConditionExpression="attribute_exists(id)",
             ExpressionAttributeValues={
+                'name': name,
                 ':rssUrl': rssUrl,
                 ':schedule': schedule,
             },

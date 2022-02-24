@@ -33,3 +33,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.REGION }}
           DB_URL: ${{ secrets.DB_URL }}
+          JOB_LAMBDA_ARN: ${{ JOB_LAMBDA_ARN }}

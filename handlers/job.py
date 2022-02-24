@@ -40,7 +40,7 @@ def put_job(event, context):
         )
 
         event_client.put_rule(Name=name,
-                              ScheduleExpression=f'{schedule}',
+                              ScheduleExpression=f'cron({schedule})',
                               State='ENABLED')
 
         event_client.put_targets(Rule=name,

@@ -34,3 +34,4 @@ jobs:
           AWS_REGION: ${{ secrets.REGION }}
           DB_URL: ${{ secrets.DB_URL }}
           JOB_LAMBDA_ARN: ${{ secrets.JOB_LAMBDA_ARN }}
+          COLUMBIA_API: ${{ secrets.COLUMBIA_API }}

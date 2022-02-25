@@ -28,6 +28,7 @@ provider:
     REGION: ${env:AWS_REGION}
     DB_URL: ${env:DB_URL}
     JOB_LAMBDA_ARN: ${env:JOB_LAMBDA_ARN}
+    COLUMBIA_API: ${env:COLUMBIA_API}
 
 functions:
   putJob:

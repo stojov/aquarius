@@ -1,4 +1,4 @@
-from helpers.db import dynamodb
+from helpers.aws import dynamodb
 
 
 def create_jobs_table():

@@ -2,7 +2,7 @@ import json
 import logging
 from os import environ
 import uuid
-from helpers.db import dynamodb, event_client
+from helpers.aws import dynamodb, event_client
 from helpers.validation import isValidURL
 
 JOB_LAMBDA_ARN = environ.get('JOB_LAMBDA_ARN')

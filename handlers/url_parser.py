@@ -1,7 +1,8 @@
 import feedparser
-from helpers.db import dynamodb
+from helpers.aws import dynamodb
 from dict2xml import dict2xml
 import requests
+from helpers.aws import event_client
 from os import environ
 
 
@@ -11,12 +12,17 @@ COLUMBIA_API = environ.get('COLUMBIA_API')
 def rss_parser(event, context):
     try:
         id = event['queryStringParameters']['id']
+        name = event['queryStringParameters']['name']
         print('Id Received->', id)
         print(id)
         table = dynamodb.Table('Jobs')
 
         result = table.get_item(Key={'id': id})
         job = result.get('Item')
+
+        if not job:
+            event_client.remove_targets(Rule=name, Ids=[id])
+            event_client.delete_rule(Name=name)
 
         etag = job.get('etag')
         modified = job.get('modified')

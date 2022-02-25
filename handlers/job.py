@@ -206,7 +206,9 @@ def delete_job(event, context):
         response = table.delete_item(
             Key={'id': id}
         )
-
+        logging.info('Here')
+        logging.info(job['name'])
+        logging.info(job['id'])
         event_client.remove_targets(Rule=job['name'], Ids=[job['id']])
         event_client.delete_rule(Name=job['name'])
     except Exception:

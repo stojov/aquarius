@@ -1,7 +1,7 @@
 import feedparser
 from helpers.aws import dynamodb
 from dict2xml import dict2xml
-import requests
+from botocore.vendored import requests
 from helpers.aws import event_client
 from os import environ
 

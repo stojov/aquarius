@@ -11,8 +11,8 @@ COLUMBIA_API = environ.get('COLUMBIA_API')
 
 def rss_parser(event, context):
     try:
-        id = event['queryStringParameters']['id']
-        name = event['queryStringParameters']['name']
+        id = event['id']
+        name = event['name']
         print('Id Received->', id)
         print(id)
         table = dynamodb.Table('Jobs')

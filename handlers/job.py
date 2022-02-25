@@ -40,7 +40,6 @@ def put_job(event, context):
         )
 
         event_client.put_rule(Name=name,
-                              Detail=json.dumps({'id': id}),
                               ScheduleExpression=f'cron({schedule})',
                               State='ENABLED')
 
@@ -49,6 +48,7 @@ def put_job(event, context):
                                      {
                                          'Arn': JOB_LAMBDA_ARN,
                                          'Id': str(uuid.uuid4()),
+                                         "Input": json.dumps({"id": id})
                                      }
                                  ])
     except Exception:

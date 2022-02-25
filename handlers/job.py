@@ -48,7 +48,7 @@ def put_job(event, context):
                                      {
                                          'Arn': JOB_LAMBDA_ARN,
                                          'Id': id,
-                                         "Input": json.dumps({"id": id})
+                                         "Input": json.dumps({"id": id, "name": name})
                                      }
                                  ])
     except Exception:

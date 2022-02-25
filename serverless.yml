@@ -38,12 +38,12 @@ functions:
           path: /api/job
           method: post
 
-  updateJob:
-    handler: handlers.job.update_job
-    events:
-      - httpApi:
-          path: /api/job/{id}
-          method: put
+  # updateJob:
+  #   handler: handlers.job.update_job
+  #   events:
+  #     - httpApi:
+  #         path: /api/job/{id}
+  #         method: put
 
   updateJobStatus:
     handler: handlers.job.update_job_status

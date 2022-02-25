@@ -47,7 +47,7 @@ def put_job(event, context):
                                  Targets=[
                                      {
                                          'Arn': JOB_LAMBDA_ARN,
-                                         'Id': str(uuid.uuid4()),
+                                         'Id': id,
                                          "Input": json.dumps({"id": id})
                                      }
                                  ])
@@ -201,9 +201,14 @@ def delete_job(event, context):
         id = event['pathParameters']['id']
 
         table = dynamodb.Table('Jobs')
+        job = table.get_item(Key={'id': id})
+
         response = table.delete_item(
             Key={'id': id}
         )
+
+        event_client.remove_targets(Rule=job['name'], Ids=[job['id']])
+        event_client.delete_rule(Name=job['name'])
     except Exception:
         logging.exception(Exception)
         return {

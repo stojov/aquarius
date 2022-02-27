@@ -13,8 +13,6 @@ def rss_parser(event, context):
     try:
         id = event['id']
         name = event['name']
-        print('Id Received->', id)
-        print(id)
         table = dynamodb.Table('Jobs')
 
         result = table.get_item(Key={'id': id})
@@ -33,8 +31,8 @@ def rss_parser(event, context):
         for item in feed.entries:
             data = {
                 "title": item.title,
-                "description": item.body,
-                "pubDate": item.date,
+                "body": item.description,
+                "date": item.published,
                 "author": item.author
             }
             xml = dict2xml(data, wrap='root', indent="   ")

@@ -1,8 +1,7 @@
 import feedparser
 from helpers.aws import dynamodb
 from dict2xml import dict2xml
-import requests
-from helpers.aws import event_client
+from helpers.aws import event_client, s3_client, XML_BUCKET_NAME
 from os import environ
 
 
@@ -37,8 +36,8 @@ def rss_parser(event, context):
             }
             xml = dict2xml(data, wrap='root', indent="   ")
 
-            headers = {'Content-Type': 'application/xml'}
-            requests.post(COLUMBIA_API, data=xml, headers=headers)
+            s3_client.put_object(
+                Bucket=XML_BUCKET_NAME, Key=f'{item.title}.xml', Body=xml)
 
         etag = feed.get('etag')
         modified = feed.get('modified')

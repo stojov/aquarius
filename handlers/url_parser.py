@@ -2,10 +2,6 @@ import feedparser
 from helpers.aws import dynamodb
 from dict2xml import dict2xml
 from helpers.aws import event_client, s3_client, XML_BUCKET_NAME
-from os import environ
-
-
-COLUMBIA_API = environ.get('COLUMBIA_API')
 
 
 def rss_parser(event, context):

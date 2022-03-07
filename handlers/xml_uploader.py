@@ -17,12 +17,7 @@ def xml_uploader(event, context):
             "formdata": [
                 {
                     "key": "documentId",
-                    "value": "{{documentId}}",
-                    "type": "text"
-                },
-                {
-                    "key": "customerId",
-                    "value": "MorganStanley",
+                    "value": f'{bucket}-{key}',
                     "type": "text"
                 },
                 {

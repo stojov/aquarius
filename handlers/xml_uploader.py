@@ -1,5 +1,10 @@
+from os import environ
+import requests
 import urllib.parse
-from helpers.aws import s3_client
+from helpers.aws import AWS_REGION, s3_client
+import json
+
+COLUMBIA_API_URL = environ.get('COLUMBIA_API_URL')
 
 
 def xml_uploader(event, context):
@@ -7,10 +12,28 @@ def xml_uploader(event, context):
     key = urllib.parse.unquote_plus(
         event['Records'][0]['s3']['object']['key'], encoding='utf-8')
     try:
-        response = s3_client.get_object(Bucket=bucket, Key=key)
-        print("BUCKET: " + bucket)
-        print("KEY: " + key)
-        print("CONTENT TYPE: " + response['ContentType'])
+        data = json.dumps({
+            "mode": "formdata",
+            "formdata": [
+                {
+                    "key": "documentId",
+                    "value": "{{documentId}}",
+                    "type": "text"
+                },
+                {
+                    "key": "customerId",
+                    "value": "MorganStanley",
+                    "type": "text"
+                },
+                {
+                    "key": "xml",
+                    "type": "file",
+                    "src": f'https://s3.{AWS_REGION}.amazonaws.com/{bucket}/{key}'
+                }
+            ]
+
+        })
+        requests.post(COLUMBIA_API_URL, data)
     except Exception as e:
         print(e)
         print('Error getting object {} from bucket {}. Make sure they exist and your bucket is in the same region as this function.'.format(key, bucket))

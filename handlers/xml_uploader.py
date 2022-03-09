@@ -1,3 +1,4 @@
+import json
 from os import environ
 import requests
 import urllib.parse
@@ -28,7 +29,7 @@ def xml_uploader(event, context):
             ]
 
         }
-        headers = {
+        headers = json.dumps({
             "auth": {
                 "type": "bearer",
                 "bearer": [
@@ -39,7 +40,7 @@ def xml_uploader(event, context):
                     }
                 ]
             },
-        }
+        })
         requests.post(COLUMBIA_API_URL, data=data, headers=headers)
     except Exception as e:
         print(e)
